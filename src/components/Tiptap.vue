@@ -1,12 +1,18 @@
 <template>
-  <editor-content :editor="editor" />
-  <button @click='gerarPdf'>Download PDF</button>
+  <div>
+    <editor-content :editor="editor" />
+    <button @click='gerarPdf'>Download PDF</button>
+    <div>
+    <div  v-html="html" ref='container'></div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { Editor, EditorContent } from '@tiptap/vue-3'
+import { Editor, EditorContent } from '@tiptap/vue-2'
 import StarterKit from '@tiptap/starter-kit'
 import { jsPDF } from "jspdf";
+import * as html2canvas from 'html2canvas'
 
 export default {
   components: {
@@ -16,13 +22,14 @@ export default {
   props: {
     modelValue: {
       type: Object,
-      default: '',
+      default: function(){ return {} },
     },
   },
 
   data() {
     return {
       editor: null,
+      html: null
     }
   },
 
@@ -40,10 +47,18 @@ export default {
 
   methods: {
     gerarPdf() {
-      var doc = new jsPDF('landscape', 'pt', 'a4');
-      doc.addHTML(this.editor.getHTML(), function() {
-      doc.save("teste.pdf");
-  });
+
+      this.html = this.editor.getHTML()
+      this.$nextTick(this.gerarPdfDoComponente)
+    },
+    gerarPdfDoComponente() {
+      html2canvas(this.$refs.container).then(canvas => {
+        var img = canvas.toDataURL("image/png",1.0);  
+        console.log(canvas)
+        var doc = new jsPDF({unit:'px', format:'a4'});
+        doc.addImage(img, 'JPEG', 20, 20,1, 1);
+        doc.save('NOME-DO-PDF.pdf')
+      })
     }
   },
 

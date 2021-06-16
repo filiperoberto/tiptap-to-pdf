@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <tiptap v-model='content'/>
-    <div>{{content}}</div>
+    <tiptap/>
   </div>
 </template>
 
@@ -12,11 +11,6 @@ export default {
   name: 'App',
   components: {
     Tiptap
-  },
-  data() {
-    return {
-      content: {}
-    }
   }
 }
 </script>
