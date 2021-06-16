@@ -1,17 +1,22 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="https://vuejs.org/images/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <tiptap v-model='content'/>
+    <div>{{content}}</div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Tiptap from './components/Tiptap.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Tiptap
+  },
+  data() {
+    return {
+      content: {}
+    }
   }
 }
 </script>
